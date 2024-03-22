@@ -1,6 +1,8 @@
 const express = require('express')
 const app = express()
 
+app.use(express.json())
+
 const PORT = 3001
 
 const persons = [
@@ -29,6 +31,20 @@ const persons = [
 // # get all persons request
 app.get('/api/persons/', (req, res) => {
   const data = res.json(persons)
+})
+
+// # get info request
+app.get('/info', (req, res) => {
+  const currentDate = new Date().toLocaleString()
+  res.send(
+    `
+    <div>
+      <h1>info</h1>
+      <p>Phonebook has info for: ${persons.length} people</p>
+      <p>${currentDate}</p>
+    </div>
+    `
+  )
 })
 
 // # get single contact
