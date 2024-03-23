@@ -28,12 +28,12 @@ const persons = [
   }
 ]
 
-// # get all persons request
+// #01 get all persons request
 app.get('/api/persons/', (req, res) => {
   const data = res.json(persons)
 })
 
-// # get info request
+// #02 get info request
 app.get('/info', (req, res) => {
   const currentDate = new Date().toLocaleString()
   res.send(
@@ -47,12 +47,28 @@ app.get('/info', (req, res) => {
   )
 })
 
-// # get single contact
-// app.get('/api/person/:id', (req, res) => {
+// #03 get single contact
+app.get('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  const person = persons.find(person => person.id === id)
+  
+  if (person) {
+    res.json(person)
+    // res.send(`
+    //   <div>
+    //       <p>Resource ID: <strong>${person.id}</strong></p>
+    //       <p>Name: <strong>${person.name}</strong></p>
+    //       <p>Number: <strong>${person.number}</strong></p>
+    //   </div>
+    // `)
+  } else {
+    res.statusMessage =`The resource with ID: ${id} has not been found`
+    res.status(404).end()
+    console.log(res.statusMessage)
+  }
+})
 
-// })
-
-// # app liste port
+// #00 app liste port
 app.listen(PORT, () => {
   console.log(`App running on PORT: ${PORT}`);
 })
