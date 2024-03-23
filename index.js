@@ -5,7 +5,7 @@ app.use(express.json())
 
 const PORT = 3001
 
-const persons = [
+let persons = [
   { 
     "id": 1,
     "name": "Arto Hellas", 
@@ -66,6 +66,14 @@ app.get('/api/persons/:id', (req, res) => {
     res.status(404).end()
     console.log(res.statusMessage)
   }
+})
+
+// # delete entry request
+app.delete('/api/persons/:id', (req, res) => {
+  const id = Number(req.params.id)
+  persons = persons.filter(person => person.id != id)
+  res.status(204).end()
+  console.log(`The person with ID: ${id} has been removed`);
 })
 
 // #00 app liste port
