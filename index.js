@@ -3,8 +3,6 @@ const app = express()
 const morgan = require('morgan')
 app.use(express.json())
 
-const PORT = 3001 
-
 // # 08 show data sent in HTTP requests
 app.use(morgan(function(tokens, req, res) {
   return [
@@ -21,30 +19,30 @@ app.use(morgan(function(tokens, req, res) {
 
 let persons = [
   { 
-    "id": 1,
-    "name": "Arto Hellas", 
-    "number": "040-123456"
+    'id': 1,
+    'name': 'Arto Hellas', 
+    'number': '040-123456'
   },
   { 
-    "id": 2,
-    "name": "Ada Lovelace", 
-    "number": "39-44-5323523"
+    'id': 2,
+    'name': 'Ada Lovelace', 
+    'number': '39-44-5323523'
   },
   { 
-    "id": 3,
-    "name": "Dan Abramov", 
-    "number": "12-43-234345"
+    'id': 3,
+    'name': 'Dan Abramov', 
+    'number': '12-43-234345'
   },
   { 
-    "id": 4,
-    "name": "Mary Poppendieck", 
-    "number": "39-23-6423122"
+    'id': 4,
+    'name': 'Mary Poppendieck', 
+    'number': '39-23-6423122'
   }
 ]
 
 // #01 get all persons request
 app.get('/api/persons/', (req, res) => {
-  const data = res.json(persons)
+  res.json(persons)
 })
 
 // #02 get info request
@@ -68,13 +66,6 @@ app.get('/api/persons/:id', (req, res) => {
   
   if (person) {
     res.json(person)
-    // res.send(`
-    //   <div>
-    //       <p>Resource ID: <strong>${person.id}</strong></p>
-    //       <p>Name: <strong>${person.name}</strong></p>
-    //       <p>Number: <strong>${person.number}</strong></p>
-    //   </div>
-    // `)
   } else {
     res.statusMessage =`The resource with ID: ${id} has not been found`
     res.status(404).end()
@@ -87,7 +78,7 @@ app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   persons = persons.filter(person => person.id != id)
   res.status(204).end() 
-  console.log(`The person with ID: ${id} has been removed`);
+  console.log(`The person with ID: ${id} has been removed`)
 })
 
 // #05 create new entry request
@@ -105,19 +96,21 @@ app.post('/api/persons', (req, res) => {
   
   if (!body.name || !body.number) {
     return res.status(400).json({
-    error: 'Some content is missing!'
+      error: 'Some content is missing!'
     })
   } else if (persons.some(person => person.name === body.name)) {
     return res.status(400).json({
       error: `The person ${body.name} hass already been added, NAME MUST BE UNIQUE!`
-      })
+    })
   }
   
   persons = persons.concat(person)
+  res.status(201)
   res.json(person)
 })
 
-// #00 app liste port 
+// #00 app listen port 
+const PORT = 3001 
 app.listen(PORT, () => {
-  console.log(`App running on PORT: ${PORT}`);  
+  console.log(`App running on PORT: ${PORT}`)  
 })
