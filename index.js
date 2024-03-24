@@ -78,17 +78,25 @@ app.delete('/api/persons/:id', (req, res) => {
 
 // #05 create new entry request
 app.post('/api/persons', (req, res) => {
-  // let id = Math.random().toString(16).slice(2)
   const generateId = () => {
     return Date.now().toString(36) + Math.random().toString(36).substr(2)
   }
   
   const body = req.body
-  
   const person = {
     id: generateId(),
     name: body.name,
     number: body.number
+  }
+  
+  if (!body.name || !body.number) {
+    return res.status(400).json({
+    error: 'Some content is missing!'
+    })
+  } else if (persons.some(person => person.name === body.name)) {
+    return res.status(400).json({
+      error: `The person ${body.name} hass already been added to the phonebook, NAME MUST BE UNIQUE!`
+      })
   }
   
   persons = persons.concat(person)
