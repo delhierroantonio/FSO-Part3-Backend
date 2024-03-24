@@ -68,12 +68,31 @@ app.get('/api/persons/:id', (req, res) => {
   }
 })
 
-// # delete entry request
+// #04 delete entry request
 app.delete('/api/persons/:id', (req, res) => {
   const id = Number(req.params.id)
   persons = persons.filter(person => person.id != id)
-  res.status(204).end()
+  res.status(204).end() 
   console.log(`The person with ID: ${id} has been removed`);
+})
+
+// #05 create new entry request
+app.post('/api/persons', (req, res) => {
+  // let id = Math.random().toString(16).slice(2)
+  const generateId = () => {
+    return Date.now().toString(36) + Math.random().toString(36).substr(2)
+  }
+  
+  const body = req.body
+  
+  const person = {
+    id: generateId(),
+    name: body.name,
+    number: body.number
+  }
+  
+  persons = persons.concat(person)
+  res.json(person)
 })
 
 // #00 app liste port
