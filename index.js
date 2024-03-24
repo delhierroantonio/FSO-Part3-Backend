@@ -2,9 +2,22 @@ const express = require('express')
 const app = express()
 const morgan = require('morgan')
 app.use(express.json())
-app.use(morgan('tiny'))
 
 const PORT = 3001 
+
+// # 08 show data sent in HTTP requests
+app.use(morgan(function(tokens, req, res) {
+  return [
+    `method: ${tokens.method(req, res)}`,
+    `url: ${tokens.url(req, res)}`,
+    `status: ${tokens.status(req, res)}`,
+    `content-lenght: ${tokens.res(req, res, 'content-length')} || response-time: ${tokens['response-time'](req, res)}ms`,
+    `data-sent: ${JSON.stringify(req.body)}`
+  ].join(' || ')
+}))
+
+// # 07 morgan middleware tiny config 
+// app.use(morgan('tiny'))
 
 let persons = [
   { 
