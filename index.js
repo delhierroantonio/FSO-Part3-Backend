@@ -1,9 +1,10 @@
 const express = require('express')
 const app = express()
-
+const morgan = require('morgan')
 app.use(express.json())
+app.use(morgan('tiny'))
 
-const PORT = 3001
+const PORT = 3001 
 
 let persons = [
   { 
@@ -95,7 +96,7 @@ app.post('/api/persons', (req, res) => {
     })
   } else if (persons.some(person => person.name === body.name)) {
     return res.status(400).json({
-      error: `The person ${body.name} hass already been added to the phonebook, NAME MUST BE UNIQUE!`
+      error: `The person ${body.name} hass already been added, NAME MUST BE UNIQUE!`
       })
   }
   
@@ -103,7 +104,7 @@ app.post('/api/persons', (req, res) => {
   res.json(person)
 })
 
-// #00 app liste port
+// #00 app liste port 
 app.listen(PORT, () => {
-  console.log(`App running on PORT: ${PORT}`);
+  console.log(`App running on PORT: ${PORT}`);  
 })
