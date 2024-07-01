@@ -43,6 +43,10 @@ let persons = [
   }
 ]
 
+app.get('/', (req, res) => {
+  res.send('<h1>Index Page</h1>')
+})
+
 // #01 get all persons request
 app.get('/api/persons/', (req, res) => {
   res.json(persons)
@@ -117,7 +121,7 @@ app.post('/api/persons', (req, res) => {
 })
 
 // #00 app listen port
-const PORT = 3001
+const PORT = process.env.PORT || 3001
 app.listen(PORT, () => {
   console.log(`App running on PORT: ${PORT}`)
 })
