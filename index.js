@@ -1,7 +1,10 @@
 const express = require('express')
 const app = express()
 const morgan = require('morgan')
+const cors = require('cors')
+
 app.use(express.json())
+app.use(cors())
 
 // # 08 show data sent in HTTP requests
 app.use(morgan(function (tokens, req, res) {
@@ -69,20 +72,23 @@ app.get('/api/persons/:id', (req, res) => {
   } else {
     res.statusMessage = `The resource with ID: ${id} has not been found`
     res.status(404).end()
-    console.log(res.statusMessage)
   }
 })
 
 // #04 delete entry request
 app.delete('/api/persons/:id', (req, res) => {
-  const id = Number(req.params.id)
+  const id = req.params.id
+  console.log(req.params.id)
   persons = persons.filter(person => person.id !== id)
+  console.log('Persons array after delete: ', persons)
+  res.send(id)
   res.status(204).end()
   console.log(`The person with ID: ${id} has been removed`)
 })
 
 // #05 create new entry request
 app.post('/api/persons', (req, res) => {
+  console.log('my log: ', req.body.phone)
   const generateId = () => {
     return Date.now().toString(36) + Math.random().toString(36).substr(2)
   }
@@ -91,10 +97,11 @@ app.post('/api/persons', (req, res) => {
   const person = {
     id: generateId(),
     name: body.name,
-    number: body.number
+    number: body.phone
   }
 
-  if (!body.name || !body.number) {
+  console.log('id: ', person.id, ',name: ', person.name, ',phone or number: ', person.number)
+  if (!body.name || !body.phone) {
     return res.status(400).json({
       error: 'Some content is missing!'
     })
