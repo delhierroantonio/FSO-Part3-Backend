@@ -4,6 +4,7 @@ const morgan = require('morgan')
 const cors = require('cors')
 
 app.use(express.json())
+app.use(express.static('dist'))
 app.use(cors())
 
 // # 08 show data sent in HTTP requests
@@ -43,9 +44,9 @@ let persons = [
   }
 ]
 
-app.get('/', (req, res) => {
-  res.send('<h1>Index Page</h1>')
-})
+// app.get('/', (req, res) => {
+//   res.send('<h1>Index Page</h1>')
+// })
 
 // #01 get all persons request
 app.get('/api/persons/', (req, res) => {
